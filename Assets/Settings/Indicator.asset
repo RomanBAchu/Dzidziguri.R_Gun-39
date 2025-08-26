@@ -18,7 +18,7 @@ MonoBehaviour:
     Clip: {fileID: 0}
   - Mult: 2
     Text: Ohh!
-    Clip: {fileID: 7400000, guid: 7a558c67fe7de834385e4f44ef20797b, type: 2}
+    Clip: {fileID: 0}
   - Mult: 3
     Text: Impossible
     Clip: {fileID: 7400000, guid: 323c6376b1157c74da89fad2f2741348, type: 2}
