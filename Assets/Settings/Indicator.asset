@@ -29,5 +29,5 @@ MonoBehaviour:
     Text: NoNoNo!
     Clip: {fileID: 7400000, guid: 19b520486c757034d92b87c59f135619, type: 2}
   - Mult: 6
-    Text: Carnage
+    Text: CARNAGE
     Clip: {fileID: 7400000, guid: 89266281c38c57c4f82b707c78102dc6, type: 2}
