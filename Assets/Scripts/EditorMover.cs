@@ -8,14 +8,19 @@ namespace DefaultNamespace
 	{
 		private PositionSaver _save;
 		private float _currentDelay;
-		
+
 		//todo comment: Что произойдёт, если _delay > _duration?
+			// CurrentDelay никогда не успеет уменьшиться до нуля за время жизни объекта (пока _duration > 0). 
+			// В результате ни одна запись в Records не будет добавлена.
 		private float _delay = 0.5f;
 		private float _duration = 5f;
 
 		private void Start()
 		{
 			//todo comment: Почему этот поиск производится здесь, а не в начале метода Update?
+				// GetComponent<T>() — относительно «тяжёлая» операция (поиск в иерархии компонентов). 
+				// Если вызывать её каждый кадр в Update(), это снизит производительность. 
+				// В Start() выполняется один раз при старте объекта.
 			_save = GetComponent<PositionSaver>();
 			_save.Records.Clear();
 		}
@@ -29,8 +34,9 @@ namespace DefaultNamespace
 				Debug.Log($"<b>{name}</b> finished", this);
 				return;
 			}
-			
+
 			//todo comment: Почему не написать (_delay -= Time.deltaTime;) по аналогии с полем _duration?
+				// Потому что логика работы _delay и _duration принципиально разная.
 			_currentDelay -= Time.deltaTime;
 			if (_currentDelay <= 0f)
 			{
@@ -39,6 +45,8 @@ namespace DefaultNamespace
 				{
 					Position = transform.position,
 					//todo comment: Для чего сохраняется значение игрового времени?
+						// Поле Time = Time.time сохраняет абсолютное время Unity в секундах на момент записи позиции 
+						// для различных действий? например для событий, анимации и тд						
 					Time = Time.time,
 				});
 			}
