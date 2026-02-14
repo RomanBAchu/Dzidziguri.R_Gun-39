@@ -10,9 +10,14 @@ namespace DefaultNamespace
 		private float _currentDelay;
 
 		//todo comment: Что произойдёт, если _delay > _duration?
-			// CurrentDelay никогда не успеет уменьшиться до нуля за время жизни объекта (пока _duration > 0). 
-			// В результате ни одна запись в Records не будет добавлена.
+		// CurrentDelay никогда не успеет уменьшиться до нуля за время жизни объекта (пока _duration > 0). 
+		// В результате ни одна запись в Records не будет добавлена.
+		[Range(0.2f, 1.0f)]
+		[SerializeField]
 		private float _delay = 0.5f;
+
+		[SerializeField]
+		[Min(0.2f)] 
 		private float _duration = 5f;
 
 		private void Start()

@@ -1,21 +1,37 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
+using Unity.Collections;
 using UnityEngine;
 
 namespace DefaultNamespace
 {
 	public class PositionSaver : MonoBehaviour
 	{
+		[Serializable]
+
 		public struct Data
 		{
 			public Vector3 Position;
 			public float Time;
 		}
 
-		[SerializeField] private TextAsset _json;
+		[SerializeField, ReadOnly] // И ТАК И С ХАЙДИСПЕКТОР НЕ ПОЛУЧАЕТСЯ КОНТЕКСТНОЕ МЕНЮ ВЫЗВАТЬ. В стандарте работает.
+		[Tooltip("Для заполнения используйте контекстное меню, на этом файле нажмите правой мышкой \"Create File\"")]
+		private TextAsset _json;
 
-		public List<Data> Records { get; private set; }
+		//HideInInspector, SerializeField]
+		//public List<Data> Records { get; private set; }  // Долго мучился, развекрнул ниже и точки стали сохраняться.
+
+		[HideInInspector, SerializeField]
+		private List<Data> _records;
+		public List<Data> Records
+		{
+			get => _records ?? (_records = new List<Data>(10));
+			private set => _records = value;
+		}
+
 
 		private void Awake()
 		{
@@ -35,10 +51,10 @@ namespace DefaultNamespace
 				Debug.LogError("Please, create TextAsset and add in field _json"); // Создал в папке: \Assets\Jsons\TextAsset.json
 				return;
 			}
-			
+
 			JsonUtility.FromJsonOverwrite(_json.text, this);
 			//todo comment: Для чего нужна эта проверка (что она позволяет избежать)?
-				// Она устраняет сбой, если нет в джейсоне Рекордс.
+			// Она устраняет сбой, если нет в джейсоне Рекордс.
 			if (Records == null)
 				Records = new List<Data>(10);
 		}
@@ -100,12 +116,15 @@ namespace DefaultNamespace
 
 		private void OnDestroy()
 		{
-			//todo logic...
-			_json = null;
-			Records = null;
-
+			if (_json != null)			
+			{				
+				string json = JsonUtility.ToJson(this);
+				File.WriteAllText(UnityEditor.AssetDatabase.GetAssetPath(_json), json);
+				UnityEditor.AssetDatabase.ImportAsset(UnityEditor.AssetDatabase.GetAssetPath(_json));
+			}
 			Debug.Log($"PositionSaver на объекте {gameObject.name} уничтожен.");
-		}
+}
+
 #endif
 	}
 }
