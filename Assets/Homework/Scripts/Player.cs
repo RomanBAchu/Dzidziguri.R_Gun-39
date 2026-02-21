@@ -29,6 +29,9 @@ namespace Netologia.Homework
 				_ball.velocity = transform.forward * _startVelocity;
 				Destroy(_ball.gameObject, _lifetime);
 			}
+
+
+			
 		}
 
 		private IEnumerator Reloader()
