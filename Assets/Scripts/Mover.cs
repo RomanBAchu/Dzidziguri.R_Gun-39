@@ -76,8 +76,6 @@ public class Mover : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawLine(_globalStart, _globalEnd);
 
-        Gizmos.color = Color.blue;
-        Vector3 direction = (_globalEnd - _globalStart).normalized;
-        Gizmos.DrawRay(_globalStart, direction * 2f);
+        
     }
 }
